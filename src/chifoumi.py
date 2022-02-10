@@ -63,26 +63,23 @@ def detectJoueurCoup(robot, tete):
 	return DetectionCoupJoueur()
 
 def resultatManche(coup1, coup2):
+	# 0>1>2>0
+	# 0-1 = -1	a
+	# 1-0 = 1	b
+	# 0-2 = -2	b
+	# 2-0 = 2	a
+	# 1-2 = -1	a
+	# 2-1 = 1	b	
 	dif = coup1-coup2
 	if (dif == 0):
 		return 0
-	elif (dif>0):
+	elif (dif==-1 or dif == 2):
 		return 1
 	else:
 		return -1 
 
 
-def chifoumi(robot: cozmo.robot.Robot):
-	robot.enable_stop_on_cliff(True)
-	robot.drive_straight(distance_mm(100), speed_mmps(50)).wait_for_completed()
-
-	teteJoueur = find_someone_to_play(robot)
-	if (not teteJoueur):
-		return
-
-	robot.play_anim_trigger(cozmo.anim.Triggers.RequestGameMemoryMatchAccept0).wait_for_completed()
-
-
+def jouerManche(robot: cozmo.robot.Robot):
 	movement_chifoumi(robot)
 
 	coupCozmo = randint(0,2)
@@ -93,7 +90,7 @@ def chifoumi(robot: cozmo.robot.Robot):
 	displayCoupC.wait_for_completed()
 
 	coupJoueur = detectionCoupJoueur.getResult()
-	
+	print("Coup joueur : {}".format(coupJoueur))
 	resultat = resultatManche(coupCozmo, coupJoueur)
 	if resultat == -1:
 		robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceWinRound).wait_for_completed()
@@ -101,6 +98,22 @@ def chifoumi(robot: cozmo.robot.Robot):
 		robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceLoseRound).wait_for_completed()
 	else:
 		robot.play_anim_trigger(cozmo.anim.Triggers.DizzyShakeLoop).wait_for_completed()
+
+
+def chifoumi(robot: cozmo.robot.Robot):
+	robot.enable_stop_on_cliff(True)
+	robot.drive_straight(distance_mm(100), speed_mmps(50)).wait_for_completed()
+
+	teteJoueur = find_someone_to_play(robot)
+	if (not teteJoueur):
+		return
+
+	# Reation à la detection du joueur
+	robot.turn_towards_face(teteJoueur).wait_for_completed()
+	robot.play_anim_trigger(cozmo.anim.Triggers.RequestGameMemoryMatchAccept0).wait_for_completed()
+	
+	jouerManche(robot)
+	
 
 
 cozmo.run_program(chifoumi, use_viewer=True)
