@@ -5,7 +5,7 @@ import time
 import asyncio.tasks
 import face_images
 
-from cozmo.util import distance_mm, speed_mmps
+from cozmo.util import distance_mm, speed_mmps, degrees
 from random import randint
 import os
 
@@ -17,15 +17,14 @@ images = {
 }
 
 
-def find_someone_to_play(robot: cozmo.robot.Robot):
+def find_someone_to_play(robot: cozmo.robot.Robot, dureeMax=10):
 	try:
 		lookaround = robot.start_behavior(cozmo.behavior.BehaviorTypes.FindFaces)
-		tetePersonne = robot.world.wait_for_observed_face(timeout=10)
+		tetePersonne = robot.world.wait_for_observed_face(timeout=dureeMax)
 		lookaround.stop()
 		return tetePersonne
 	except asyncio.tasks.futures.TimeoutError:
 		lookaround.stop()
-		robot.say_text("Personne ne veux jouer avec moi !").wait_for_completed()
 		return None
 
 def move_lift_and_say(robot: cozmo.robot.Robot, nomMovement):
@@ -79,7 +78,7 @@ def resultatManche(coup1, coup2):
 		return -1 
 
 
-def jouerManche(robot: cozmo.robot.Robot):
+def jouerManche(robot: cozmo.robot.Robot, teteJoueur):
 	movement_chifoumi(robot)
 
 	coupCozmo = randint(0,2)
@@ -91,29 +90,76 @@ def jouerManche(robot: cozmo.robot.Robot):
 
 	coupJoueur = detectionCoupJoueur.getResult()
 	print("Coup joueur : {}".format(coupJoueur))
-	resultat = resultatManche(coupCozmo, coupJoueur)
+	return resultatManche(coupCozmo, coupJoueur)
+	
+def finDeManche(robot: cozmo.robot.Robot, resultat, scoreCozmo, scoreJoueur):
 	if resultat == -1:
+		scoreCozmo += 1
 		robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceWinRound).wait_for_completed()
 	elif resultat == 1:
+		scoreJoueur += 1
 		robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceLoseRound).wait_for_completed()
 	else:
-		robot.play_anim_trigger(cozmo.anim.Triggers.DizzyShakeLoop).wait_for_completed()
+		robot.play_anim_trigger(cozmo.anim.Triggers.DizzyShakeStop).wait_for_completed()
+	
+	return scoreCozmo, scoreJoueur
 
+def gameEnded(robot: cozmo.robot.Robot, scoreJoueur, scoreCozmo):
+	if scoreCozmo == 3:
+		if scoreJoueur == 0:
+			robot.say_text("Ah! ah! ah! 3 0").wait_for_completed()
+		elif scoreJoueur == 1:
+			robot.say_text("3 1 ! 3 1 !").wait_for_completed()
+		else: # scoreJoueur == 2
+			robot.say_text("Bien joué mais j'ai gagné 3 2").wait_for_completed()
+		
+		robot.play_anim_trigger(cozmo.anim.Triggers.MajorWin ).wait_for_completed()
+	 
+	else: # Joueur a gagné
+		if scoreCozmo == 0:
+			robot.say_text("Tricheur! 0 3").wait_for_completed()
+		elif scoreCozmo == 1:
+			robot.say_text("1 3").wait_for_completed()
+		else: # scoreCozmo == 2
+			robot.say_text("Bien joué, 2 3").wait_for_completed()
+		
+		robot.play_anim_trigger(cozmo.anim.Triggers.MajorFail).wait_for_completed()
 
 def chifoumi(robot: cozmo.robot.Robot):
 	robot.enable_stop_on_cliff(True)
-	robot.drive_straight(distance_mm(100), speed_mmps(50)).wait_for_completed()
 
-	teteJoueur = find_someone_to_play(robot)
+	p = cozmo.util.Pose(0,0,0, angle_z=degrees(0))
+
+	teteJoueur = find_someone_to_play(robot, dureeMax=20)
 	if (not teteJoueur):
+		#robot.say_text("Personne ne veux jouer avec moi !").wait_for_completed()
 		return
 
 	# Reation à la detection du joueur
 	robot.turn_towards_face(teteJoueur).wait_for_completed()
 	robot.play_anim_trigger(cozmo.anim.Triggers.RequestGameMemoryMatchAccept0).wait_for_completed()
 	
-	jouerManche(robot)
+	scoreJoueur = 0
+	scoreCozmo = 0
+
+	while scoreJoueur != 3 and scoreCozmo != 3:
+		robot.go_to_pose(p).wait_for_completed()
+		robot.turn_towards_face(teteJoueur).wait_for_completed()
+		resultat = jouerManche(robot, teteJoueur)
+		
+		scoreCozmo, scoreJoueur = finDeManche(robot, resultat, scoreCozmo, scoreJoueur)
+		print(scoreCozmo, " ", scoreJoueur)
 	
+	gameEnded(robot, scoreJoueur, scoreCozmo)
+
+
+def testWin(robot: cozmo.robot.Robot):
+	gameEnded(robot, 0,3)
+	gameEnded(robot, 1,3)
+	gameEnded(robot, 2,3)
+	gameEnded(robot, 3,0)
+	gameEnded(robot, 3,1)
+	gameEnded(robot, 3,2)
 
 
 cozmo.run_program(chifoumi, use_viewer=True)
