@@ -4,7 +4,6 @@ import time
 import cozmo
 
 
-
 def get_cube(robot: cozmo.robot.Robot):
     robot.move_head(1.0)
     robot.world.visible_face_count()
@@ -21,7 +20,7 @@ def wait_for_light_cubes(robot: cozmo.robot.Robot, amount_cubes=3, time_searchin
         :param time_searching: (float) nombre de secondes durant lequel robot effectue sa recherche. Default: 20
         :param amount_cubes: (int) nombre de cubes devant etre trouvé pour arreter de regarder autour de lui. Default: 3
 
-        :return ([cozmo.objects.LightCube]) une array contenant tout les objets trouvés
+        :return (int) nombre d'objets trouvés
     """
     try:
         look_around = robot.start_behavior(cozmo.behavior.BehaviorTypes.LookAroundInPlace)
@@ -30,10 +29,22 @@ def wait_for_light_cubes(robot: cozmo.robot.Robot, amount_cubes=3, time_searchin
                                                                    timeout=time_searching)
         print(nb_cubes_seen)
         look_around.stop()
-    except asyncio.tasks.futures.TimeoutError:  # not enought cubes were found visible at same time
+        return nb_cubes_seen
+    except asyncio.TimeoutError:  # not enough cubes were found visible at same time
         print(0)
         look_around.stop()
         return 0
 
 
-cozmo.run_program(wait_for_light_cubes, use_viewer=True)
+def get_light_cubes(robot: cozmo.robot.Robot, amount_cubes=3, time_searching=5):
+    if wait_for_light_cubes(robot, amount_cubes, time_searching) == amount_cubes:
+        if robot.world.connect_to_cubes():
+            robot.say_text("on a de quoi jouer", True).wait_for_completed()
+        else:
+            robot.say_text("je n'arrive pas a me connecter aux cubes").wait_for_completed()
+    else:
+        robot.say_text("on n'a pas de quoi jouer").wait_for_completed()
+        return
+
+
+cozmo.run_program(get_light_cubes, use_viewer=True)
