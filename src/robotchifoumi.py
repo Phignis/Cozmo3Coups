@@ -37,7 +37,7 @@ class RobotChifoumi:
 
 		coupCozmo = self.get_coup()
 		self.robot.set_head_angle(cozmo.robot.MAX_HEAD_ANGLE, in_parallel=True)
-		detectionCoupJoueur = self.detectJoueurCoup(teteJoueur)
+		detectionCoupJoueur = self.detect_joueur_coup(teteJoueur)
 		displayCoupC = self.display_coup(coupCozmo, 2000)
 		detectionCoupJoueur.wait_for_completed()
 		displayCoupC.wait_for_completed()
@@ -59,8 +59,8 @@ class RobotChifoumi:
 		else:
 			return Coup.SCISSORS	
 
-	def detectJoueurCoup(self, tete) -> DetectionCoupJoueurRandom:
-		return DetectionCoupJoueurRandom(self.robot, tete)
+	def detect_joueur_coup(self) -> DetectionCoupJoueurRandom:
+		return DetectionCoupJoueurRandom(self.robot)
 
 	def move_lift_and_say(self, nomMovement):
 		self.robot.set_lift_height(0.9).wait_for_completed()

@@ -28,13 +28,4 @@ def chifoumi(robotCozmo: cozmo.robot.Robot):
 	robot.react_to_game_end(game.scoreJ1, game.scoreJ2)
 
 
-def testWin(robot: cozmo.robot.Robot):
-	gameEnded(robot, 0,3)
-	gameEnded(robot, 1,3)
-	gameEnded(robot, 2,3)
-	gameEnded(robot, 3,0)
-	gameEnded(robot, 3,1)
-	gameEnded(robot, 3,2)
-
-
 cozmo.run_program(chifoumi, use_viewer=True)
