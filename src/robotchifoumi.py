@@ -9,6 +9,7 @@ from chifoumi import Coup, RoundResult, GameChifoumi
 
 import os
 
+
 class RobotChifoumi:
 	def __init__(self, robot: cozmo.robot.Robot):
 		self.robot = robot

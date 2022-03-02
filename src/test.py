@@ -17,6 +17,8 @@ def testGameEnd(r: cozmo.robot.Robot):
 
 def testConnectToLightCubes(robot):
 	robot.world.connect_to_cubes()
+	robot.world.auto_disconnect_from_cubes_at_end()
+	
 	for c in robot.world.connected_light_cubes:
 		print(c)
 
