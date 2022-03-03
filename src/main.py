@@ -1,20 +1,21 @@
-#!/usr/bin/python3
+#!/bin/python3
 
 import cozmo
+import os
 import time
 import asyncio.tasks
 from robotchifoumi import RobotChifoumi
 from chifoumi import *
 
 
-def main_chifoumi(robot_cozmo: cozmo.robot.Robot):
+def main_chifoumi(robot_cozmo: cozmo.robot.Robot, nb_point_gagnant=3):
 
 	robot_cozmo.world.auto_disconnect_from_cubes_at_end(enable=True)  # all cubes will disconnect after the end of program
 
 	robot_cozmo.enable_stop_on_cliff(True)
 
 	robot = RobotChifoumi(robot_cozmo)
-	game = GameChifoumi()
+	game = GameChifoumi(nb_point_gagnant)
 
 	tete_joueur = robot.find_someone_to_play(dureeMax=20)
 	if not tete_joueur:
@@ -31,5 +32,8 @@ def main_chifoumi(robot_cozmo: cozmo.robot.Robot):
 	
 	robot.react_to_game_end(game.scoreJ1, game.scoreJ2)
 
+for i in range(1000000000000000000000000000):
+	print(i)
 
 cozmo.run_program(main_chifoumi, use_viewer=True)
+
