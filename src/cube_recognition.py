@@ -2,6 +2,7 @@ import asyncio
 import time
 
 import cozmo
+import robotchifoumi
 
 
 def get_cube(robot: cozmo.robot.Robot):
@@ -40,6 +41,7 @@ def get_light_cubes(robot: cozmo.robot.Robot, amount_cubes=3, time_searching=5):
     if wait_for_light_cubes(robot, amount_cubes, time_searching) == amount_cubes:
         if robot.world.connect_to_cubes():
             robot.say_text("on a de quoi jouer", True).wait_for_completed()
+            print(robot.world.connected_light_cubes())
         else:
             robot.say_text("je n'arrive pas a me connecter aux cubes").wait_for_completed()
     else:
@@ -47,4 +49,18 @@ def get_light_cubes(robot: cozmo.robot.Robot, amount_cubes=3, time_searching=5):
         return
 
 
-cozmo.run_program(get_light_cubes, use_viewer=True)
+def test_wait_for(robot_chi: robotchifoumi.RobotChifoumi):
+    print("début")
+    robot_chi.robot.world.wait_for(cozmo.objects.EvtObjectTapped)
+    print("fin")
+
+
+def test_inactivity(robot_chi: robotchifoumi.RobotChifoumi):
+    robot_chi.react_to_inactive_player()
+
+
+def launch(robot: cozmo.robot.Robot):
+    test_inactivity(robotchifoumi.RobotChifoumi(robot))
+
+
+cozmo.run_program(launch)

@@ -16,9 +16,9 @@ class RobotChifoumi:
 
 		current_directory = os.path.dirname(os.path.realpath(__file__))
 		self.images = {
-			Coup.ROCK : face_images.load_cozmo_image(os.path.join(current_directory, "../image/chi.png")),
-			Coup.PAPER : face_images.load_cozmo_image(os.path.join(current_directory, "../image/fou.png")),
-			Coup.SCISSORS : face_images.load_cozmo_image(os.path.join(current_directory, "../image/mi.png")) 
+			Coup.ROCK: face_images.load_cozmo_image(os.path.join(current_directory, "../image/chi.png")),
+			Coup.PAPER: face_images.load_cozmo_image(os.path.join(current_directory, "../image/fou.png")),
+			Coup.SCISSORS: face_images.load_cozmo_image(os.path.join(current_directory, "../image/mi.png"))
 		}
 
 	def find_someone_to_play(self, dureeMax=10):
@@ -47,15 +47,20 @@ class RobotChifoumi:
 		print("Coup joueur : {}".format(coupJoueur))
 		return game.play_round(coupCozmo, coupJoueur)
 
-	def react_start_game(self, teteJoueur):
-		self.robot.turn_towards_face(teteJoueur).wait_for_completed()
+	def react_start_game(self, tete_joueur):
+		self.robot.turn_towards_face(tete_joueur).wait_for_completed()
 		self.robot.play_anim_trigger(cozmo.anim.Triggers.RequestGameMemoryMatchAccept0).wait_for_completed()
+
+	def react_to_inactive_player(self):
+		self.robot.play_anim_trigger(cozmo.anim.Triggers.Singing_120bpm).wait_for_completed()
+		self.robot.say_text("Joue ton coup, je n'en peux plus d'attendre").wait_for_completed()
+
 	
 	def get_coup(self) -> Coup:
-		r = randint(0,2)
-		if r==0:
+		r = randint(0, 2)
+		if r == 0:
 			return Coup.ROCK
-		elif r==1:
+		elif r == 1:
 			return Coup.PAPER
 		else:
 			return Coup.SCISSORS	
