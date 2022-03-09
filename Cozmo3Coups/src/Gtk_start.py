@@ -39,7 +39,7 @@ class MyWindow(Gtk.Window):
 	def load_css(self):
 		css_provider = Gtk.CssProvider()
 		current_directory = os.path.dirname(os.path.realpath(__file__))
-		css_provider.load_from_path(os.path.join(current_directory, "../css/theme.css"))
+		css_provider.load_from_path(os.path.join(current_directory, "../resources/css/theme.css"))
 		Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION) 
 
 	def start_clicked(self, _):

@@ -16,9 +16,9 @@ class RobotChifoumi:
 
         current_directory = os.path.dirname(os.path.realpath(__file__))
         self.images = {
-            Coup.ROCK: face_images.load_cozmo_image(os.path.join(current_directory, "../image/chi.png")),
-            Coup.PAPER: face_images.load_cozmo_image(os.path.join(current_directory, "../image/fou.png")),
-            Coup.SCISSORS: face_images.load_cozmo_image(os.path.join(current_directory, "../image/mi.png"))
+            Coup.ROCK: face_images.load_cozmo_image(os.path.join(current_directory, "../resources/image/chi.png")),
+            Coup.PAPER: face_images.load_cozmo_image(os.path.join(current_directory, "../resources/image/fou.png")),
+            Coup.SCISSORS: face_images.load_cozmo_image(os.path.join(current_directory, "../resources/image/mi.png"))
         }
 
     def find_someone_to_play(self, dureeMax=10):
