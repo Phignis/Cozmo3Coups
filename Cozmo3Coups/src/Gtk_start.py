@@ -12,13 +12,16 @@ import subprocess
 
 class MyWindow(Gtk.Window):
     def __init__(self):
-        super().__init__(title="Hello World")
+        super().__init__(title="Cozmo fait les 3 coups")
 
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(self.main_box)
 
         self.titre = Gtk.Label(label="Chi Fou Mi Cozmo")
         self.main_box.pack_start(self.titre, True, True, 0)
+
+        self.titre.get_style_context().add_class("title")
+
 
         adjustement = Gtk.Adjustment(value=1, lower=1, upper=9, step_increment=1, page_increment=10)
         self.spinbutton_rounds = Gtk.SpinButton()
