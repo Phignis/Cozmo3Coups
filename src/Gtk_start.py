@@ -45,7 +45,7 @@ class MyWindow(Gtk.Window):
 	def start_clicked(self, _):
 		print("Start ! ", self.get_nb_rounds())
 		current_directory = os.path.dirname(os.path.realpath(__file__))
-		subprocess.run(os.path.join(current_directory,"main.py"))
+		subprocess.run(args=[os.path.join(current_directory,"main.py"), str(self.get_nb_rounds())])
 		
 
 	def get_nb_rounds(self):

@@ -4,11 +4,12 @@ import cozmo
 import os
 import time
 import asyncio.tasks
+import sys
 from robotchifoumi import RobotChifoumi
 from chifoumi import *
 
 
-def main_chifoumi(robot_cozmo: cozmo.robot.Robot, nb_point_gagnant=3):
+def main_chifoumi(robot_cozmo: cozmo.robot.Robot, nb_point_gagnant):
 
 	robot_cozmo.world.auto_disconnect_from_cubes_at_end(enable=True)  # all cubes will disconnect after the end of program
 
@@ -32,8 +33,12 @@ def main_chifoumi(robot_cozmo: cozmo.robot.Robot, nb_point_gagnant=3):
 	
 	robot.react_to_game_end(game.scoreJ1, game.scoreJ2)
 
-for i in range(1000000000000000000000000000):
-	print(i)
+nb_point_gagnant = 3
 
-cozmo.run_program(main_chifoumi, use_viewer=True)
+if (len(sys.argv)==2):
+	nb_point_gagnant = int(sys.argv[1])
+
+print(nb_point_gagnant)
+
+cozmo.run_program(lambda r: main_chifoumi(r, nb_point_gagnant), use_viewer=True)
 
