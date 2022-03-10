@@ -2,6 +2,9 @@
 
 
 import cozmo
+
+import chifoumi
+import robotchifoumi
 from robotchifoumi import RobotChifoumi
 
 
@@ -24,4 +27,15 @@ def testConnectToLightCubes(robot):
         print(c)
 
 
-cozmo.run_program(testConnectToLightCubes)
+def testImages(robot: cozmo.robot.Robot):
+    robot_cozmo = robotchifoumi.RobotChifoumi(robot)
+
+    #for image in robot_cozmo.images:
+     #   robot_cozmo.robot.display_oled_face_image(image.value, 200).wait_for_completed()
+
+    robot_cozmo.robot.display_oled_face_image(robot_cozmo.images[chifoumi.Coup.ROCK], 5000).wait_for_completed()
+    robot_cozmo.robot.display_oled_face_image(robot_cozmo.images[chifoumi.Coup.PAPER], 5000).wait_for_completed()
+    robot_cozmo.robot.display_oled_face_image(robot_cozmo.images[chifoumi.Coup.SCISSORS], 5000).wait_for_completed()
+
+
+cozmo.run_program(testImages)
