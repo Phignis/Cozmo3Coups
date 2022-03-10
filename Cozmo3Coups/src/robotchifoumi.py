@@ -3,6 +3,8 @@ import time
 import asyncio.tasks
 from cozmo.util import distance_mm, speed_mmps, degrees
 from random import randint
+
+import detectioncoupjoueur
 from detectioncoupjoueur import DetectionCoupJoueurRandom
 import face_images
 from chifoumi import Coup, RoundResult, GameChifoumi
@@ -21,30 +23,29 @@ class RobotChifoumi:
             Coup.SCISSORS: face_images.load_cozmo_image(os.path.join(current_directory, "../resources/image/mi.png"))
         }
 
-    def find_someone_to_play(self, dureeMax=10):
+    def find_someone_to_play(self, duree_max=10):
         try:
             lookaround = self.robot.start_behavior(cozmo.behavior.BehaviorTypes.FindFaces)
-            tetePersonne = self.robot.world.wait_for_observed_face(timeout=dureeMax)
+            tete_personne = self.robot.world.wait_for_observed_face(timeout=duree_max)
             lookaround.stop()
-            return tetePersonne
+            return tete_personne
         except asyncio.tasks.futures.TimeoutError:
             lookaround.stop()
             return None
 
-    def play_round(self, game: GameChifoumi, teteJoueur) -> RoundResult:
-        self.robot.turn_towards_face(teteJoueur).wait_for_completed()
+    def play_round(self, game: GameChifoumi, tete_joueur) -> RoundResult:
+        self.robot.turn_towards_face(tete_joueur).wait_for_completed()
         self.movement_chifoumi()
 
-        coupCozmo = self.get_coup()
-        self.robot.set_head_angle(cozmo.robot.MAX_HEAD_ANGLE, in_parallel=True)
-        detectionCoupJoueur = self.detect_joueur_coup(teteJoueur)
-        displayCoupC = self.display_coup(coupCozmo, 2000)
-        detectionCoupJoueur.wait_for_completed()
-        displayCoupC.wait_for_completed()
+        coup_cozmo = self.get_coup()
+        coup_joueur = detectioncoupjoueur.DetectionCoupJoueurCube(self).get_coup_joueur()
 
-        coupJoueur = detectionCoupJoueur.getResult()
-        print("Coup joueur : {}".format(coupJoueur))
-        return game.play_round(coupCozmo, coupJoueur)
+        self.robot.set_head_angle(cozmo.robot.MAX_HEAD_ANGLE, in_parallel=True)
+        display_coup_c = self.display_coup(coup_cozmo, 2000)
+        display_coup_c.wait_for_completed()
+
+        print("Coup joueur : {}, coup cozmo : {}".format(coup_joueur, coup_cozmo))
+        return game.play_round(coup_cozmo, coup_joueur)
 
     def react_start_game(self, tete_joueur):
         self.robot.turn_towards_face(tete_joueur).wait_for_completed()
@@ -63,13 +64,10 @@ class RobotChifoumi:
         else:
             return Coup.SCISSORS
 
-    def detect_joueur_coup(self) -> DetectionCoupJoueurRandom:
-        return DetectionCoupJoueurRandom(self.robot)
-
-    def move_lift_and_say(self, nomMovement):
+    def move_lift_and_say(self, nom_movement):
         self.robot.set_lift_height(0.9).wait_for_completed()
 
-        moveSay = self.robot.say_text(nomMovement, in_parallel=True, duration_scalar=0.8)
+        moveSay = self.robot.say_text(nom_movement, in_parallel=True, duration_scalar=0.8)
         time.sleep(0.5)
         moveMove = self.robot.set_lift_height(0, in_parallel=True, duration=0.5)
         moveMove.wait_for_completed()
