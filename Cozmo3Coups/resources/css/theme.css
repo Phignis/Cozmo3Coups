@@ -1,3 +1,12 @@
 label.title {
-    font-size: 100px;
+    font-size: 50px;
+}
+
+box {
+    margin: 10px;
+    background-color: darksalmon;
+}
+
+label.start {
+    font-size: 50px;
 }
