@@ -13,14 +13,20 @@ import os
 
 
 class RobotChifoumi:
+    """
+    RobotChifoumi représente un robot de notre application. il possède en attribut un robot (cozmo.robot.Robot), et les images
+    représentant les coups
+    """
+
     def __init__(self, robot: cozmo.robot.Robot):
         self.robot = robot
 
         current_directory = os.path.dirname(os.path.realpath(__file__))
         self.images = {
-            Coup.ROCK: face_images.load_cozmo_image(os.path.join(current_directory, "../resources/image/chi.png")),
-            Coup.PAPER: face_images.load_cozmo_image(os.path.join(current_directory, "../resources/image/fou.png")),
-            Coup.SCISSORS: face_images.load_cozmo_image(os.path.join(current_directory, "../resources/image/mi.png"))
+            Coup.ROCK: face_images.load_cozmo_image(os.path.join(current_directory, "../resources/image/rock.png")),
+            Coup.PAPER: face_images.load_cozmo_image(os.path.join(current_directory, "../resources/image/paper.png")),
+            Coup.SCISSORS: face_images.load_cozmo_image(os.path.join(current_directory,
+                                                                     "../resources/image/scissors.png"))
         }
 
     def find_someone_to_play(self, duree_max=10):

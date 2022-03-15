@@ -1,5 +1,4 @@
 import asyncio
-import time
 
 import cozmo
 import robotchifoumi
@@ -48,14 +47,6 @@ def connect_to_light_cubes(robot_cozmo: cozmo.robot.Robot, amount_cubes=3, time_
     else:
         robot_cozmo.say_text("on n'a pas de quoi jouer").wait_for_completed()
         return False
-
-
-def test_wait_for(robot_chi: robotchifoumi.RobotChifoumi):
-    connect_to_light_cubes(robot_chi.robot)
-    print("début")
-    evt = robot_chi.robot.world.wait_for(cozmo.objects.EvtObjectTapped)
-    print(type(evt.obj))
-    print("fin")
 
 
 def test_inactivity(robot_chi: robotchifoumi.RobotChifoumi):
