@@ -43,7 +43,7 @@ class MyWindow(Gtk.Window):
         self.button_start = Gtk.Button(label="Start")
         self.button_start.connect("clicked", self.start_clicked)
         self.main_box.pack_start(self.button_start, True, True, 0)
-        self.titre.get_label().get_style_context().add_class("start")
+        self.button_start.get_style_context().add_class("start")
         self.button_start.set_valign(Gtk.Align.CENTER)
         self.button_start.set_halign(Gtk.Align.CENTER)
 
