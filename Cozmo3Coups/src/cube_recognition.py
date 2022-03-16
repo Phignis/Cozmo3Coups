@@ -37,7 +37,7 @@ def connect_to_light_cubes(robot_cozmo: cozmo.robot.Robot, amount_cubes=3, time_
     :return: True si le robot_chifoumi a pu se connecter aux trois light_cubes, false sinon
     """
 
-    if wait_for_light_cubes(robot_cozmo, amount_cubes, time_searching) == amount_cubes:
+    if wait_for_light_cubes(robot_cozmo, amount_cubes, time_searching) >= amount_cubes:
         if robot_cozmo.world.connect_to_cubes():
             robot_cozmo.say_text("on a de quoi jouer", True).wait_for_completed()
             return True

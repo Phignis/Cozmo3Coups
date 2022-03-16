@@ -96,22 +96,23 @@ class RobotChifoumi:
             self.robot.play_anim_trigger(cozmo.anim.Triggers.DizzyShakeStop).wait_for_completed()
 
     def react_to_game_end(self, scoreCozmo, scoreJoueur):
-        if scoreCozmo == 3:
-            if scoreJoueur == 0:
-                self.robot.say_text("Ah! ah! ah! 3 0").wait_for_completed()
-            elif scoreJoueur == 1:
-                self.robot.say_text("3 1 ! 3 1 !").wait_for_completed()
-            else:  # scoreJoueur == 2
-                self.robot.say_text("Bien joué mais j'ai gagné 3 2").wait_for_completed()
+        ecart_score = scoreJoueur-scoreCozmo
+        if ecart_score < 0: # Cozmo a gagné
+            if ecart_score <= -3:
+                self.robot.say_text("Ah! ah! ah! {} {}".format(scoreCozmo, scoreJoueur)).wait_for_completed()
+            elif ecart_score == -2:
+                self.robot.say_text("{0} {1} ! {0} {1} !".format(scoreCozmo, scoreJoueur)).wait_for_completed()
+            elif ecart_score == -1:
+                self.robot.say_text("Bien joué mais j'ai gagné {} {}".format(scoreCozmo, scoreJoueur)).wait_for_completed()
 
             self.robot.play_anim_trigger(cozmo.anim.Triggers.MajorWin).wait_for_completed()
-
+            
         else:  # Joueur a gagné
-            if scoreCozmo == 0:
-                self.robot.say_text("Tricheur! 0 3").wait_for_completed()
-            elif scoreCozmo == 1:
-                self.robot.say_text("1 3").wait_for_completed()
-            else:  # scoreCozmo == 2
-                self.robot.say_text("Bien joué, 2 3").wait_for_completed()
+            if ecart_score >= 3:
+                self.robot.say_text("Tricheur! {} {}".format(scoreCozmo, scoreJoueur)).wait_for_completed()
+            elif ecart_score == 2:
+                self.robot.say_text("{} {}".format(scoreCozmo, scoreJoueur)).wait_for_completed()
+            else:
+                self.robot.say_text("Bien joué, {} {}".format(scoreCozmo, scoreJoueur)).wait_for_completed()
 
             self.robot.play_anim_trigger(cozmo.anim.Triggers.MajorFail).wait_for_completed()
