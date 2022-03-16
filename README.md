@@ -5,7 +5,7 @@
 > *   Hardware :
 >     -   1 cozmo (chargé au préalable, sinon ralentissement très genant des animations)
 >     -   1 téléphone (iOS / Android)
->     -   3 lightcubes cozmo avec motifs différents
+>     -   3 lightcubes cozmo avec motifs différents (chargés!)
 >     -   1 cable USB pour relier votre téléphone à votre ordinateur
 > *   Software : 
 >     -   Python 3.5.1 minimum
