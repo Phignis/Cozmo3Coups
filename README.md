@@ -27,7 +27,7 @@
 >     *   Activer le déboguage par USB dans les options développeur
 > 4.  Connecter (avec adb au besoin activé sur votre ordinateur) votre téléphone à votre ordinateur. Accepter le deboguage USB sur votre téléphone.
 > 5.  Placer Cozmo sur son chargeur pour le démarrer
-> 6.  Connectez votre téléphone au wifi du cozmo (secouer le bras du cozmo deux fois pour obtenir le code wifi)
+> 6.  Connectez votre téléphone au wifi du cozmo (secouer le bras du cozmo deux fois pour obtenir le code wifi) Attention au changement automatique de wifi
 > 7.  Lancer l'application cozmo et connectez vous
 > 8.  Démarrer le mode sdk (paramètres, activer le sdk)
 > 9.  Lancer l'application (supposé depuis la racine du projet cloné)
