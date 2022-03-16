@@ -51,3 +51,12 @@ def connect_to_light_cubes(robot_cozmo: cozmo.robot.Robot, amount_cubes=3, time_
 
 def test_inactivity(robot_chi: robotchifoumi.RobotChifoumi):
     robot_chi.react_to_inactive_player()
+
+
+def light_cube_identification(cube: cozmo.objects.LightCube):
+    """
+    Permet d'allumer un cube a fin d'identification pour le repérer
+    :param cube: cube que l'on souhaite repérer
+    """
+    cube.set_light_corners(cozmo.lights.red_light, cozmo.lights.green_light, cozmo.lights.blue_light,
+                           cozmo.lights.red_light)

@@ -116,3 +116,6 @@ class RobotChifoumi:
                 self.robot.say_text("Bien joué, {} {}".format(scoreCozmo, scoreJoueur)).wait_for_completed()
 
             self.robot.play_anim_trigger(cozmo.anim.Triggers.MajorFail).wait_for_completed()
+
+    def get_cubes_connected(self):
+        return
