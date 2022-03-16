@@ -29,6 +29,9 @@ def main_chifoumi(robot_cozmo: cozmo.robot.Robot, nb_point_gagnant):
 
     if not cube_recognition.connect_to_light_cubes(robot.robot):
         return
+    else:
+        for cube in robot.robot.world.connected_light_cubes:
+            cube_recognition.light_cube_identification(cube)
 
     while not game.is_game_ended():
         round_result = robot.play_round(game, tete_joueur)
@@ -37,6 +40,9 @@ def main_chifoumi(robot_cozmo: cozmo.robot.Robot, nb_point_gagnant):
         print(game.scoreJ1, " ", game.scoreJ2)
 
     robot.react_to_game_end(game.scoreJ1, game.scoreJ2)
+
+    for cube in robot.robot.world.connected_light_cubes:
+        cube.set_lights_off()
 
 
 nb_point_gagnant = 3
