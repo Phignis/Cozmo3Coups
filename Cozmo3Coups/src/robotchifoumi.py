@@ -29,6 +29,8 @@ class RobotChifoumi:
                                                                      "../resources/image/scissors.png"))
         }
 
+        self.serieVictoireDefaite = 0
+
     def find_someone_to_play(self, duree_max=10):
         try:
             lookaround = self.robot.start_behavior(cozmo.behavior.BehaviorTypes.FindFaces)
@@ -89,10 +91,22 @@ class RobotChifoumi:
 
     def react_to_round_end(self, result: RoundResult):
         if result == RoundResult.PLAYER1_WIN:
+            self.serieVictoireDefaite = max(self.serieVictoireDefaite+1, 1)
+            text = "J'ai gagné hé hé"
+            if (self.serieVictoireDefaite>=3):
+                text = "Et boum {} victoires d'affilées".format(self.serieVictoireDefaite)
+            self.robot.say_text(text).wait_for_completed()
             self.robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceWinRound).wait_for_completed()
         elif result == RoundResult.PLAYER2_WIN:
+            self.serieVictoireDefaite = min(self.serieVictoireDefaite-1, -1)
+            text = "J'ai perdu..."
+            if (self.serieVictoireDefaite<=-3):
+                text = "Encore perdu... {} fois d'affilées".format(-self.serieVictoireDefaite)
+            self.robot.say_text(text).wait_for_completed()
             self.robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceLoseRound).wait_for_completed()
         else:
+            self.serieVictoireDefaite = 0
+            self.robot.say_text("Equalité").wait_for_completed()
             self.robot.play_anim_trigger(cozmo.anim.Triggers.DizzyShakeStop).wait_for_completed()
 
     def react_to_game_end(self, scoreCozmo, scoreJoueur):

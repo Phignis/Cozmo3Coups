@@ -3,7 +3,7 @@
 
 import cozmo
 
-import chifoumi
+from chifoumi import RoundResult
 import robotchifoumi
 from robotchifoumi import RobotChifoumi
 
@@ -18,7 +18,24 @@ def testGameEnd(r: cozmo.robot.Robot):
     robot.react_to_game_end(3, 0)
     robot.react_to_game_end(3, 2)
 
+def testRoundEnd(r: cozmo.robot.Robot):
+    robot = RobotChifoumi(r)
 
+    robot.react_to_round_end(RoundResult.PLAYER1_WIN)
+    robot.react_to_round_end(RoundResult.PLAYER1_WIN)
+    robot.react_to_round_end(RoundResult.PLAYER1_WIN)
+    robot.react_to_round_end(RoundResult.PLAYER1_WIN)
+    robot.react_to_round_end(RoundResult.PLAYER1_WIN)
+
+    robot.react_to_round_end(RoundResult.PLAYER2_WIN)
+    robot.react_to_round_end(RoundResult.PLAYER2_WIN)
+    robot.react_to_round_end(RoundResult.PLAYER2_WIN)
+    robot.react_to_round_end(RoundResult.PLAYER2_WIN)
+    robot.react_to_round_end(RoundResult.PLAYER2_WIN)
+    robot.react_to_round_end(RoundResult.PLAYER2_WIN)
+
+    robot.react_to_round_end(RoundResult.DRAW)
+    robot.react_to_round_end(RoundResult.PLAYER2_WIN)
 def testConnectToLightCubes(robot):
     robot.world.connect_to_cubes()
     robot.world.auto_disconnect_from_cubes_at_end()
@@ -38,4 +55,4 @@ def testImages(robot: cozmo.robot.Robot):
     robot_cozmo.robot.display_oled_face_image(robot_cozmo.images[chifoumi.Coup.SCISSORS], 5000).wait_for_completed()
 
 
-cozmo.run_program(testGameEnd)
+cozmo.run_program(testRoundEnd)
