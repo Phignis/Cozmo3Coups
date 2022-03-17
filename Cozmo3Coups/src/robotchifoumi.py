@@ -44,6 +44,7 @@ class RobotChifoumi:
         self.movement_chifoumi()
 
         coup_cozmo = self.get_coup()
+
         coup_joueur = detectioncoupjoueur.DetectionCoupJoueurCube(self).get_coup_joueur()
 
         self.robot.set_head_angle(cozmo.robot.MAX_HEAD_ANGLE, in_parallel=True)
@@ -96,17 +97,18 @@ class RobotChifoumi:
             self.robot.play_anim_trigger(cozmo.anim.Triggers.DizzyShakeStop).wait_for_completed()
 
     def react_to_game_end(self, scoreCozmo, scoreJoueur):
-        ecart_score = scoreJoueur-scoreCozmo
-        if ecart_score < 0: # Cozmo a gagné
+        ecart_score = scoreJoueur - scoreCozmo
+        if ecart_score < 0:  # Cozmo a gagné
             if ecart_score <= -3:
                 self.robot.say_text("Ah! ah! ah! {} {}".format(scoreCozmo, scoreJoueur)).wait_for_completed()
             elif ecart_score == -2:
                 self.robot.say_text("{0} {1} ! {0} {1} !".format(scoreCozmo, scoreJoueur)).wait_for_completed()
             elif ecart_score == -1:
-                self.robot.say_text("Bien joué mais j'ai gagné {} {}".format(scoreCozmo, scoreJoueur)).wait_for_completed()
+                self.robot.say_text(
+                    "Bien joué mais j'ai gagné {} {}".format(scoreCozmo, scoreJoueur)).wait_for_completed()
 
             self.robot.play_anim_trigger(cozmo.anim.Triggers.MajorWin).wait_for_completed()
-            
+
         else:  # Joueur a gagné
             if ecart_score >= 3:
                 self.robot.say_text("Tricheur! {} {}".format(scoreCozmo, scoreJoueur)).wait_for_completed()
