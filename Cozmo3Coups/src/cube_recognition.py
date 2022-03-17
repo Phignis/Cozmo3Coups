@@ -23,7 +23,6 @@ def wait_for_light_cubes(robot: cozmo.robot.Robot, amount_cubes=3, time_searchin
         look_around.stop()
         return nb_cubes_seen
     except asyncio.TimeoutError:  # not enough cubes were found visible at same time
-        print(0)
         look_around.stop()
         return 0
 
