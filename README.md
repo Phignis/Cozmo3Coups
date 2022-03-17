@@ -36,7 +36,7 @@
 >
 
 ## Problèmes possibles
->
+> *   Le robot cozmo 057D06 semble avoir tendance à fonctionner moins bien (crashs) que le robot 017912
 > *   Si jamais vous ne voyez pas le message "Accepter le deboguage USB" lorsque vous connecter votre téléphone à l'ordinateur, assurez vous que adb est bien lancé (commande abd start-server). Lorsque vous faites adb-devices, vous devriez avoir l'identifiant de votre téléphone, en mode device pour attached.
 > *   Le robot peut éteindre son écran tout à coup tout en continuant son mouvement, et sans continuer l'éxecution du programme. Cela signifie qu'il a planté. Empecher le de tomber, une fois arrêter reposer le sur son chargeur et retenter le programme après un certain temps.
 > *   Si jamais vous avez des messages tel que PyGObject is not installed, gi is not installed, vous n'avez peut etre pas installer PyGObect, lancez le sans gtk 

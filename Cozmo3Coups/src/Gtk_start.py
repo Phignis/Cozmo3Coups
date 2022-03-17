@@ -9,7 +9,6 @@ from gi.repository import Gtk, Gdk
 import os
 import subprocess
 
-
 class MyWindow(Gtk.Window):
     def __init__(self):
         super().__init__(title="Cozmo fait les 3 coups")
@@ -38,6 +37,10 @@ class MyWindow(Gtk.Window):
         self.spinbutton_points_gagnants.set_numeric(True)
         self.box_selection_nb_point_gagnant.pack_start(self.spinbutton_points_gagnants, False, False, 0)
 
+        #image roue
+        current_directory = os.path.dirname(os.path.realpath(__file__))
+        self.image_roue = Gtk.Image(file = os.path.join(current_directory, "../resources/image/roue_force.png"))
+        self.main_box.pack_start(self.image_roue, True, True, 0)
 
         # Start
         self.button_start = Gtk.Button(label="Start")

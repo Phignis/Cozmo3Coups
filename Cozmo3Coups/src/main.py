@@ -37,8 +37,8 @@ def main_chifoumi(robot_cozmo: cozmo.robot.Robot, nb_point_gagnant):
         try:
             round_result = robot.play_round(game, tete_joueur)
         except asyncio.TimeoutError:
-            robot.robot.say_text("Tu ne joues plus, j'en ai marre j'arrête!")
-            robot.robot.play_anim_trigger(cozmo.anim.Triggers.PeekABooGetOutSad).wait_for_completed()
+            robot.robot.say_text("Tu ne joues plus, j'en ai marre j'arrête!").wait_for_completed()
+            robot.robot.play_anim_trigger(cozmo.anim.Triggers.NothingToDoBoredEvent).wait_for_completed()
             return 2
 
         robot.react_to_round_end(round_result)
