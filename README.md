@@ -35,6 +35,12 @@
 >     *   sans gtk: ./Cozmo3Coups/src/main.py
 >
 
+## Comment jouer
+>
+> 1.  Choisisez le nombre de points gagnants dans l'application
+> 2.  Taper sur le cube que vous voulez jouer après que Cozmo ai dit "Chi Fou Mi"
+>
+
 ## Problèmes possibles
 > *   Le robot cozmo 057D06 semble avoir tendance à fonctionner moins bien (crashs) que le robot 017912
 > *   Si jamais vous ne voyez pas le message "Accepter le deboguage USB" lorsque vous connecter votre téléphone à l'ordinateur, assurez vous que adb est bien lancé (commande abd start-server). Lorsque vous faites adb-devices, vous devriez avoir l'identifiant de votre téléphone, en mode device pour attached.
