@@ -1,5 +1,7 @@
 # Cozmo fait les 3 coups
 
+*Une vidéo de présentation du projet se trouve [ici](./doc/meet_Cozmo3Coups.mp4)*
+
 ## Matériel nécessaire, dépendances
 >
 > *   Hardware :
